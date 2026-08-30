@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nour Al-Asar | Interactive Portfolio</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --bg-dark: #0a0f1d;
+      --bg-card: rgba(16, 23, 42, 0.75);
+      --accent-cyan: #00f2fe;
+      --accent-blue: #4facfe;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-glow: rgba(0, 242, 254, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0; width: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(10, 15, 29, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, var(--accent-cyan), var(--accent-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--accent-cyan);
+      text-shadow: 0 0 10px var(--border-glow);
+    }
+
+    /* Search Bar */
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem 0.5rem 2.2rem;
+      border-radius: 20px;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px var(--border-glow);
+      width: 220px;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 2rem;
+      background: radial-gradient(circle at center, rgba(0, 242, 254, 0.05) 0%, transparent 70%);
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(45deg, var(--accent-cyan), var(--accent-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      max-width: 650px;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      border-radius: 30px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, var(--accent-cyan), var(--accent-blue));
+      color: #000;
+      box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 242, 254, 0.5);
+    }
+
+    /* Section Headers */
+    .section-title {
+      text-align: center;
+      margin: 4rem 0 2rem;
+    }
+
+    .section-title h2 {
+      font-size: 2.2rem;
+      color: var(--text-main);
+    }
+
+    .section-title p {
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    /* Category Cards Grid */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    .category-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .category-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--border-glow);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .category-card:hover::before { opacity: 1; }
+
+    .category-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, var(--accent-cyan), var(--accent-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: transform 0.3s ease;
+    }
+
+    .category-card:hover .category-icon {
+      transform: scale(1.15) rotate(5deg);
+    }
+
+    /* Interactive Game Container */
+    #game-container {
+      display: none;
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: #111;
+      overflow: hidden;
+    }
+
+    #gameCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .game-ui-overlay {
+      position: absolute;
+      top: 80px;
+      left: 20px;
+      background: rgba(10, 15, 29, 0.85);
+      padding: 1.2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-glow);
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .controls-hint {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .key {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .modal-content {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      max-width: 800px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 2.5rem;
+      position: relative;
+      box-shadow: 0 0 50px rgba(0, 242, 254, 0.2);
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close-modal:hover { color: var(--accent-cyan); }
+
+    .code-snippet {
+      background: #050811;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-left: 3px solid var(--accent-cyan);
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: #7dd3fc;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 3rem 2rem;
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--text-main);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .contact-card:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.05);
+      transform: translateY(-3px);
+    }
+
+    /* Search Overlay Results */
+    #search-results-modal .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .search-result-item {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .search-result-item:hover {
+      background: rgba(0, 242, 254, 0.1);
+      border-color: var(--accent-cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <i class="fa-solid fa-code-branch"></i> NOUR AL-ASAR
+    </div>
+    <ul class="nav-links">
+      <li><a onclick="showSection('landing')">Home</a></li>
+      <li><a onclick="showSection('categories')">Categories</a></li>
+      <li><a onclick="showSection('contact')">Contact</a></li>
+    </ul>
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search projects..." onkeyup="handleSearch(event)">
+    </div>
+  </nav>
+
+  <div id="landing-view">
+    <section class="hero">
+      <h1>Architecting Enterprise <br><span>Full-Stack & Cloud Systems</span></h1>
+      <p>Explore an interactive suite of projects engineered in .NET MVC, Cloud Security, Automation, and Systems Architecture.</p>
+      <a onclick="showSection('categories')" class="btn btn-primary">
+        <i class="fa-solid fa-gamepad"></i> Explore Drive Experience
+      </a>
+    </section>
+
+    <section id="categories">
+      <div class="section-title">
+        <h2>Project Domains</h2>
+        <p>Select a sector to launch the interactive drive map</p>
+      </div>
+
+      <div class="categories-grid" id="categoriesGrid">
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <h2>Get In Touch</h2>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Interested in collaborating or reviewing detailed source repositories?</p>
+      <div class="contact-links">
+        <a href="https://github.com/Nour-Ashraf-code" target="_blank" class="contact-card">
+          <i class="fa-brands fa-github" style="font-size: 1.5rem; color: var(--accent-cyan);"></i>
+          <span>GitHub / Nour-Ashraf-code</span>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <div id="game-container">
+    <div class="game-ui-overlay">
+      <h3 id="currentCategoryTitle" style="color: var(--accent-cyan); margin-bottom: 5px;">Category</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">Navigate the road to inspect projects.</p>
+      <div class="controls-hint">
+        <span><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> Drive</span>
+        <span><span class="key">H</span> Horn</span>
+        <span><span class="key">ENTER</span> Select</span>
+      </div>
+    </div>
+    <button onclick="exitGame()" class="btn btn-primary" style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+      <i class="fa-solid fa-arrow-left"></i> Exit Drive
+    </button>
+    <canvas id="gameCanvas"></canvas>
+  </div>
+
+  <div class="modal" id="projectModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('projectModal')">&times;</span>
+      <h2 id="modalTitle" style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Project Title</h2>
+      <span id="modalCategory" style="font-size: 0.8rem; background: rgba(0,242,254,0.1); color: var(--accent-cyan); padding: 4px 8px; border-radius: 4px;">Category</span>
+      <p id="modalDesc" style="margin: 1.5rem 0; color: var(--text-muted); line-height: 1.6;"></p>
+      <h4 style="color: var(--text-main);">Architecture & Implementation Highlight</h4>
+      <div class="code-snippet" id="modalCode"></div>
+      <a id="modalGithub" href="#" target="_blank" class="btn btn-primary" style="margin-top: 1rem;">
+        <i class="fa-brands fa-github"></i> View GitHub Repository
+      </a>
+    </div>
+  </div>
+
+  <div class="modal" id="searchModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('searchModal')">&times;</span>
+      <h2>Search Results</h2>
+      <div class="results-list" id="searchResultsContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. DATA STRUCTURE (Projects & Categories)
+       ========================================================================== */
+    const projectData = {
+      medical: {
+        title: "Medical & Healthcare",
+        icon: "fa-heart-pulse",
+        projects: [
+          {
+            id: "m1",
+            name: "MediSecure EHR Platform",
+            desc: "HIPAA-compliant Electronic Health Records system built with ASP.NET Core MVC, role-based encryption, and real-time patient monitoring feeds.",
+            snippet: "// Data Encryption at Rest\n[Authorize(Roles = \"Practitioner\")]\npublic async Task<IActionResult> GetEncryptedRecord(Guid patientId) {\n    var record = await _ehrService.GetDecryptedFileAsync(patientId);\n    return View(record);\n}"
+          },
+          {
+            id: "m2",
+            name: "AI Diagnostics Engine",
+            desc: "High-throughput medical imaging workflow service integrating deep-learning inference models with DICOM standard servers.",
+            snippet: "# Inference Pipeline Connector\ndef process_dicom_stream(stream_bytes):\n    tensor = transform_input(stream_bytes)\n    prediction = model.predict(tensor)\n    return parse_heatmaps(prediction)"
+          }
+        ]
+      },
+      agriculture: {
+        title: "Smart Agriculture",
+        icon: "fa-wheat-awn",
+        projects: [
+          {
+            id: "a1",
+            name: "AgriSense Crop Analytics",
+            desc: "IoT telemetry aggregator collecting soil moisture, nitrogen metrics, and thermal imagery to automate precision drip irrigation.",
+            snippet: "// Telemetry Stream Ingestion\npublic class SoilSensorConsumer : IHostedService {\n    protected override async Task ExecuteAsync(CancellationToken stoppingToken) {\n        await _mqttClient.SubscribeAsync(\"telemetry/sensors/+\");\n    }\n}"
+          },
+          {
+            id: "a2",
+            name: "Yield Prediction Pipeline",
+            desc: "Distributed geospatial data processing pipeline calculating seasonal harvest yields based on satellite multispectral index tracking.",
+            snippet: "SELECT field_id, AVG(ndvi_index) as avg_greenness\nFROM satellite_telemetry\nWHERE capture_date >= NOW() - INTERVAL '30 days'\nGROUP BY field_id;"
+          }
+        ]
+      },
+      devops: {
+        title: "DevOps & Security",
+        icon: "fa-shield-halved",
+        projects: [
+          {
+            id: "d1",
+            name: "Automated DevSecOps Pipeline",
+            desc: "End-to-end CI/CD security scanning engine integrating Static Analysis (SAST) and Container Image scanning with zero-trust deployment gates.",
+            snippet: "# GitHub Actions Security Gate\n- name: Run Trivy Scanner\n  uses: aquasecurity/trivy-action@master\n  with:\n    image-ref: 'docker.io/app:${{ github.sha }}'\n    exit-code: '1'"
+          },
+          {
+            id: "d2",
+            name: "Cloud Guard Architecture",
+            desc: "Infrastructure-as-Code Terraform stack deploying self-healing Kubernetes clusters across redundant multi-region cloud zones.",
+            snippet: "resource \"aws_eks_cluster\" \"primary\" {\n  name     = \"production-cluster\"\n  role_arn = aws_iam_role.eks_master.arn\n  vpc_config {\n    subnet_ids = module.vpc.private_subnets\n  }\n}"
+          }
+        ]
+      }
+    };
+
+    /* ==========================================================================
+       2. AUDIO SYNTHESIS ENGINE (No External Assets Needed)
+       ========================================================================== */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+      }
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      }
+      playHorn() {
+        this.init();
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc1.type = 'sawtooth';
+        osc2.type = 'sawtooth';
+        osc1.frequency.value = 400;
+        osc2.frequency.value = 500;
+
+        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(); osc2.start();
+        osc1.stop(this.ctx.currentTime + 0.4);
+        osc2.stop(this.ctx.currentTime + 0.4);
+      }
+    }
+    const sounds = new SoundEngine();
+
+    /* ==========================================================================
+       3. DOM & UI CONTROLLER
+       ========================================================================== */
+    function renderCategories() {
+      const grid = document.getElementById('categoriesGrid');
+      grid.innerHTML = '';
+      Object.keys(projectData).forEach(key => {
+        const cat = projectData[key];
+        grid.innerHTML += `
+          <div class="category-card" onclick="startDrive('${key}')">
+            <i class="fa-solid ${cat.icon} category-icon"></i>
+            <h3>${cat.title}</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
+              ${cat.projects.length} Advanced Systems
+            </p>
+          </div>
+        `;
+      });
+    }
+
+    function showSection(sectionId) {
+      document.getElementById('landing-view').style.display = 'block';
+      document.getElementById('game-container').style.display = 'none';
+      if(sectionId !== 'landing') {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function openModal(projectId) {
+      let found = null;
+      Object.values(projectData).forEach(cat => {
+        const p = cat.projects.find(item => item.id === projectId);
+        if (p) { found = p; found.catTitle = cat.title; }
+      });
+      if (!found) return;
+
+      document.getElementById('modalTitle').innerText = found.name;
+      document.getElementById('modalCategory').innerText = found.catTitle;
+      document.getElementById('modalDesc').innerText = found.desc;
+      document.getElementById('modalCode').innerText = found.snippet;
+      document.getElementById('modalGithub').href = "https://github.com/Nour-Ashraf-code";
+      
+      document.getElementById('projectModal').style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    function handleSearch(e) {
+      if (e.key === 'Enter') {
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) return;
+        
+        const results = [];
+        Object.values(projectData).forEach(cat => {
+          cat.projects.forEach(p => {
+            if (p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query)) {
+              results.push(p);
+            }
+          });
+        });
+
+        const container = document.getElementById('searchResultsContainer');
+        container.innerHTML = '';
+        if (results.length === 0) {
+          container.innerHTML = '<p style="color: var(--text-muted);">No projects found matching your criteria.</p>';
+        } else {
+          results.forEach(p => {
+            container.innerHTML += `
+              <div class="search-result-item" onclick="closeModal('searchModal'); openModal('${p.id}');">
+                <h4 style="color: var(--accent-cyan);">${p.name}</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">${p.desc}</p>
+              </div>
+            `;
+          });
+        }
+        document.getElementById('searchModal').style.display = 'flex';
+      }
+    }
+
+    /* ==========================================================================
+       4. 2D TOP-VIEW CAR MINIGAME ENGINE (Smooth Canvas Rendering)
+       ========================================================================== */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let currentCategoryKey = null;
+    let interactiveNodes = [];
+
+    // Keyboard state
+    const keys = { w: false, a: false, s: false, d: false, h: false, enter: false };
+
+    // Player Car State
+    const car = {
+      x: 0,
+      y: 0,
+      width: 30,
+      height: 50,
+      angle: 0,
+      speed: 0,
+      maxSpeed: 6,
+      accel: 0.2,
+      friction: 0.95,
+      turnSpeed: 0.05
+    };
+
+    function initCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function startDrive(categoryKey) {
+      currentCategoryKey = categoryKey;
+      document.getElementById('landing-view').style.display = 'none';
+      document.getElementById('game-container').style.display = 'block';
+      document.getElementById('currentCategoryTitle').innerText = projectData[categoryKey].title;
+      
+      initCanvas();
+
+      // Reset car position
+      car.x = canvas.width / 2;
+      car.y = canvas.height - 150;
+      car.angle = -Math.PI / 2; // Facing Upwards
+      car.speed = 0;
+
+      // Populate project nodes along the road
+      const projects = projectData[categoryKey].projects;
+      interactiveNodes = projects.map((proj, idx) => ({
+        ...proj,
+        x: canvas.width / 2 + (idx % 2 === 0 ? -180 : 180),
+        y: canvas.height - 350 - (idx * 300),
+        radius: 40,
+        hovered: false
+      }));
+
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+
+      cancelAnimationFrame(animationFrameId);
+      gameLoop();
+    }
+
+    function exitGame() {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      showSection('categories');
+    }
+
+    function handleKeyDown(e) {
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = true;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = true;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = true;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = true;
+      if (k === 'h') {
+        if (!keys.h) sounds.playHorn();
+        keys.h = true;
+      }
+      if (e.key === 'Enter') {
+        // Check proximity to open modal
+        interactiveNodes.forEach(node => {
+          const dist = Math.hypot(car.x - node.x, car.y - node.y);
+          if (dist < node.radius + 30) {
+            openModal(node.id);
+          }
+        });
+      }
+    }
+
+    function handleKeyUp(e) {
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = false;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = false;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = false;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = false;
+      if (k === 'h') keys.h = false;
+    }
+
+    function updatePhysics() {
+      // Acceleration
+      if (keys.w) car.speed = Math.min(car.speed + car.accel, car.maxSpeed);
+      if (keys.s) car.speed = Math.max(car.speed - car.accel, -car.maxSpeed / 2);
+
+      // Friction
+      car.speed *= car.friction;
+
+      // Steering (reverses steering direction when moving backward)
+      const turnDir = car.speed < 0 ? -1 : 1;
+      if (keys.a) car.angle -= car.turnSpeed * (Math.abs(car.speed) / car.maxSpeed) * turnDir;
+      if (keys.d) car.angle += car.turnSpeed * (Math.abs(car.speed) / car.maxSpeed) * turnDir;
+
+      // Position update
+      car.x += Math.cos(car.angle) * car.speed;
+      car.y += Math.sin(car.angle) * car.speed;
+
+      // Keep within bounds
+      car.x = Math.max(50, Math.min(canvas.width - 50, car.x));
+      car.y = Math.max(50, Math.min(canvas.height - 50, car.y));
+    }
+
+    function drawScene() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Draw Road Background
+      ctx.fillStyle = "#1e293b";
+      ctx.fillRect(canvas.width / 2 - 120, 0, 240, canvas.height);
+
+      // Road Borders (Cyan Neon Line)
+      ctx.strokeStyle = "#00f2fe";
+      ctx.lineWidth = 4;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "#00f2fe";
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2 - 120, 0); ctx.lineTo(canvas.width / 2 - 120, canvas.height);
+      ctx.moveTo(canvas.width / 2 + 120, 0); ctx.lineTo(canvas.width / 2 + 120, canvas.height);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Dashed Center Line
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([20, 20]);
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0); ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 2. Draw Interactive Project Nodes
+      interactiveNodes.forEach(node => {
+        const dist = Math.hypot(car.x - node.x, car.y - node.y);
+        const isNear = dist < node.radius + 30;
+
+        // Connector line to road
+        ctx.strokeStyle = isNear ? "#00f2fe" : "rgba(255, 255, 255, 0.1)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(node.x, node.y);
+        ctx.lineTo(canvas.width / 2, node.y);
+        ctx.stroke();
+
+        // Node Circle
+        ctx.fillStyle = isNear ? "#00f2fe" : "#0f172a";
+        ctx.strokeStyle = "#00f2fe";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Icon inside Node
+        ctx.fillStyle = isNear ? "#000" : "#fff";
+        ctx.font = "16px 'Inter', sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(isNear ? "PRESS ENTER" : "STOP HERE", node.x, node.y + 5);
+
+        // Project Title & Short Description Card beside node
+        ctx.fillStyle = "rgba(16, 23, 42, 0.9)";
+        ctx.strokeStyle = isNear ? "#00f2fe" : "rgba(255, 255, 255, 0.1)";
+        const cardX = node.x > canvas.width / 2 ? node.x + 60 : node.x - 260;
+        ctx.fillRect(cardX, node.y - 40, 200, 80);
+        ctx.strokeRect(cardX, node.y - 40, 200, 80);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 13px 'Inter', sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(node.name, cardX + 10, node.y - 15);
+
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "10px 'Inter', sans-serif";
+        // Simple text wrapping / slicing
+        ctx.fillText(node.desc.substring(0, 32) + "...", cardX + 10, node.y + 10);
+      });
+
+      // 3. Draw Car
+      ctx.save();
+      ctx.translate(car.x, car.y);
+      ctx.rotate(car.angle + Math.PI / 2); // Adjust offset
+
+      // Shadow
+      ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+      ctx.fillRect(-car.width / 2 + 3, -car.height / 2 + 3, car.width, car.height);
+
+      // Body
+      ctx.fillStyle = "#00f2fe";
+      ctx.beginPath();
+      ctx.roundRect(-car.width / 2, -car.height / 2, car.width, car.height, 6);
+      ctx.fill();
+
+      // Roof / Windshield
+      ctx.fillStyle = "#0a0f1d";
+      ctx.fillRect(-car.width / 2 + 4, -car.height / 4, car.width - 8, car.height / 2);
+
+      // Headlights
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = "#ffffff";
+      ctx.fillRect(-car.width / 2 + 2, -car.height / 2 - 2, 6, 4);
+      ctx.fillRect(car.width / 2 - 8, -car.height / 2 - 2, 6, 4);
+
+      ctx.restore();
+    }
+
+    function gameLoop() {
+      updatePhysics();
+      drawScene();
+      animationFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    // Window Resize Handler
+    window.addEventListener('resize', () => {
+      if (document.getElementById('game-container').style.display === 'block') {
+        initCanvas();
+      }
+    });
+
+    // Initial Kickoff
+    renderCategories();
+  </script>
+</body>
+</html>
